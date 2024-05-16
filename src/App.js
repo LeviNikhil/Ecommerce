@@ -61,7 +61,6 @@ function App() {
   };
 
   const handleAddProduct = (productName) => {
-    // console.log(productName);
     const product = {
        id: Products.length + 1,
        name: productName,
@@ -72,7 +71,7 @@ function App() {
     }
 
   return (
-    <div>
+    <>
       <Header openCart={openCart} openAddProduct={openAddProduct} />
       <Products Products={product} onAddtoCart={handleAddtoCart} />
       <Cart
@@ -87,7 +86,7 @@ function App() {
         onCloseAddProduct={closeAddProduct}
         onAddProduct={handleAddProduct}
       />
-    </div>
+    </>
   );
 }
 
