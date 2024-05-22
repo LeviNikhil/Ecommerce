@@ -1,4 +1,4 @@
-import {React,useState} from 'react'
+import {React,useEffect,useState} from 'react'
 import AppContext from './app-context'
 import Products from '../components/Products/products';
 
@@ -9,7 +9,8 @@ const AppContextProvider = ({children}) => {
     const [showcart, setshowcart] = useState(false);
     const [cardItems, setcardItems] = useState([]);
     const [showAddProduct, setshowAddProduct] = useState(false);
-    const [product, setproduct] = useState(initialproducts);
+    const [product, setproduct] = useState([]);
+    const [loading, setIsloading] = useState(false);
   
     const openCart = () => setshowcart(true);
     const closeCart = () => setshowcart(false);
@@ -70,16 +71,35 @@ const AppContextProvider = ({children}) => {
         setproduct((state)=>[...state, product])
         closeAddProduct();
       }
+    
+    //Useeffect ke function hmesha synchronous hota hain
+    
+    useEffect(()=>{
+       const fetchProducts= async () =>{
+       setIsloading(true);
+        try {
+            const response = await fetch(
+            "https://react-store-8d755-default-rtdb.firebaseio.com/products.json");
+            const data = await response.json();
+            setproduct(data);
+            setIsloading(false);
+        } catch (err) {
+            console.log(err);
+            setIsloading(false);
+        }
+       }
+       fetchProducts();
+    },[]);
 
       //Sare Functions as value provide kra diya diye context ko
       //Instead of Passing Them as Props
-      
       const appContextValue={
          showcart,
          showAddProduct,
          product,
          cardItems,
          openCart,
+         loading,
          closeCart,
          openAddProduct,
          closeAddProduct,

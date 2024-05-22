@@ -17,8 +17,13 @@ function Product({id,name,image,onAddtoCart})
 }
 function Products()
 {
-    const {product}=useContext(AppContext);
-    return(
+    const {product,loading}=useContext(AppContext);
+    if(loading) return (
+        <div className="loading">
+            <img src={require(`../../assets/load-icon.png`)} />
+        </div>
+    );
+    else return(
     <div className="products-container">
         {product.map((products) => (
           <Product key={products.id}

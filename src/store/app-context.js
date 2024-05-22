@@ -3,6 +3,7 @@ import { createContext } from "react";
 const AppContext = createContext({
          showcart:false,
          showAddProduct:false,
+         loading:false,
          product:[],
          cardItems:[],
          openCart: () => {},
