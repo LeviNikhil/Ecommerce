@@ -1,11 +1,14 @@
+import AppContext from "../../store/app-context";
 import Modal from "../UI/Modal";
 import "./AddProduct.css";
-import {useState } from "react";
-function AddProduct({showAddProduct,onCloseAddProduct,onAddProduct}){
+import {useContext, useState } from "react";
+function AddProduct(){
+    const {showAddProduct,closeAddProduct,handleAddProduct}=useContext(AppContext);
+
     const [ProductName,setProductName]= useState("");
     function HandleSubmit(event){
        event.preventDefault();
-       onAddProduct(ProductName);
+       handleAddProduct(ProductName);
     }
     
     const handleProductNameChange=(event) => {
@@ -14,7 +17,7 @@ function AddProduct({showAddProduct,onCloseAddProduct,onAddProduct}){
     }
 
     return(
-        <Modal show={showAddProduct} onclose={onCloseAddProduct} >
+        <Modal show={showAddProduct} onclose={closeAddProduct} >
             <div className="add-product-container">
                 <div className="add-product-heading">Add Product</div>
                 <form onSubmit={HandleSubmit} className="add-product-form">

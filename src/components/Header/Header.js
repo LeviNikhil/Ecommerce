@@ -1,8 +1,11 @@
+import AppContext from "../../store/app-context";
 import "./Header.css";
-
+import { useContext } from "react";
 //Want to make modal components reusable
 //since we need it two times in add product and cart
-function Header({openCart,openAddProduct}) {
+function Header() {
+  const {openCart,openAddProduct}=useContext(AppContext);
+
   return (
     <div className="header">
       <h1>My React Store</h1>

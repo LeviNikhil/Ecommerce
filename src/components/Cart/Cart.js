@@ -1,7 +1,11 @@
+import { useContext } from "react";
 import Modal from "../UI/Modal";
 import "./Cart.css";
+import AppContext from "../../store/app-context";
 
-function CartItem({ id, name, image, quantity,onIncQuantity,onDecQuantity }) {
+function CartItem({ id, name, image, quantity}) {
+  const{handleDecreaseQuantity,handleIncreaseQuantity}=useContext(AppContext);
+  
   return (
     <div className="cart-item">
       <div className="item-img">
@@ -12,12 +16,12 @@ function CartItem({ id, name, image, quantity,onIncQuantity,onDecQuantity }) {
         <div className="item-qty">
           <div>Quantity: {quantity}</div>
           <div>
-            <button className="yellow-button qty-button qty-plus-button" onClick={() => onIncQuantity(id)}>
+            <button className="yellow-button qty-button qty-plus-button" onClick={() => handleIncreaseQuantity(id)}>
               +
             </button>
           </div>
           <div>
-            <button className="yellow-button qty-button" onClick={() => onDecQuantity(id)}>-</button>
+            <button className="yellow-button qty-button" onClick={() => handleDecreaseQuantity(id)}>-</button>
           </div>
         </div>
       </div>
@@ -25,7 +29,8 @@ function CartItem({ id, name, image, quantity,onIncQuantity,onDecQuantity }) {
   );
 }
 
-function Cart({ showcart, closeCart, cardItems , onIncQuantity , onDecQuantity}) {
+function Cart() {
+  const{showcart,closeCart,cardItems}=useContext(AppContext);
   return (
     <Modal show={showcart} onclose={closeCart}>
       <div className="cart-container">
@@ -37,8 +42,6 @@ function Cart({ showcart, closeCart, cardItems , onIncQuantity , onDecQuantity})
             name={item.name}
             image={item.image}
             quantity={item.quantity}
-            onIncQuantity={onIncQuantity}
-            onDecQuantity={onDecQuantity}
           />
         )) : (<div className="empty-cart">Cart is Empty</div>)}
         <div className="cart-buttons">
