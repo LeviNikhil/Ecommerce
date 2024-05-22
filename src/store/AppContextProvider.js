@@ -2,14 +2,12 @@ import {React,useEffect,useState} from 'react'
 import AppContext from './app-context'
 import Products from '../components/Products/products';
 
-import initialproducts from '../Data/products.json';
-
 const AppContextProvider = ({children}) => {
 
     const [showcart, setshowcart] = useState(false);
     const [cardItems, setcardItems] = useState([]);
     const [showAddProduct, setshowAddProduct] = useState(false);
-    const [product, setproduct] = useState([]);
+    const [product, setproduct] = useState({});
     const [loading, setIsloading] = useState(false);
   
     const openCart = () => setshowcart(true);
@@ -61,16 +59,41 @@ const AppContextProvider = ({children}) => {
       }
       setcardItems(updatedCardItems);
     };
-  
+
+  //FireBase se product object ke form me aa rhe the isliye
+  //jbki phle hmare inmemory product array ke form me aa rhe the isliye
+  //Hme mapping ka trika bdalna hoga
+  //Hm Keys ke trough iterate krenge na ki index ki trah
+
     const handleAddProduct = (productName) => {
       const product = {
-         id: Products.length + 1,
+         id: Object.keys(Products).length + 1,
          name: productName,
          image: "default_product.png"
        };
-        setproduct((state)=>[...state, product])
+        sendProuctData(product);
+        setproduct((state)=>{
+            return {...state,[Object.keys(state).length+1]:product}
+        });
         closeAddProduct();
       }
+      
+      //Ab refersh krne par added data nhi htega kyunki wo backend 
+      //me ja chucka hain
+
+      const sendProuctData = async (product) => {
+        try {
+            await fetch(
+            "https://react-store-8d755-default-rtdb.firebaseio.com/products.json",
+            {
+                method: "POST",
+                body: JSON.stringify(product),
+            }
+              );
+        } catch (error) {
+              console.log(error);
+        }
+      };
     
     //Useeffect ke function hmesha synchronous hota hain
     

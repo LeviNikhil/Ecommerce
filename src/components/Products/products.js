@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import "./products.css";
 import AppContext from "../../store/app-context";
+import Loader from "../UI/Loader";
 //Map from productsdata
 
 //Using props for destructuring and passing info
-function Product({id,name,image,onAddtoCart})
+function Product({id,name,image})
 {
     const {handleAddtoCart}=useContext(AppContext);
     return(
@@ -18,19 +19,18 @@ function Product({id,name,image,onAddtoCart})
 function Products()
 {
     const {product,loading}=useContext(AppContext);
-    if(loading) return (
-        <div className="loading">
-            <img src={require(`../../assets/load-icon.png`)} />
-        </div>
-    );
-    else return(
+    if(loading){
+        return <Loader/>;
+    }
+    return(
     <div className="products-container">
-        {product.map((products) => (
-          <Product key={products.id}
-            id={products.id}
-            name={products.name}
-            image={products.image}
-           />
+        {Object.keys(product).map((k)=>(
+            <Product
+                key={k}
+                id={product[k].id}
+                name={product[k].name}
+                image={product[k].image}
+            />
         ))}
     </div>
 );
